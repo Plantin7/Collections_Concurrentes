@@ -19,7 +19,7 @@ public class BogusVolatile {
 	}
 
 	public static void main(String[] args) throws InterruptedException {
-		var bogus = new Bogus();
+		var bogus = new BogusVolatile();
 		var thread = new Thread(bogus::runCounter);
 		thread.start();
 		Thread.sleep(100);
@@ -27,3 +27,5 @@ public class BogusVolatile {
 		thread.join();
 	}
 }
+
+// 173256243
