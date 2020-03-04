@@ -1,5 +1,9 @@
 package fr.umlv.conc;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodHandles.Lookup;
+import java.lang.invoke.VarHandle;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.IntStream;
@@ -16,13 +20,25 @@ public class Linked2<E> {
 		}
 	}
 
-	private final AtomicReference<Entry<E>> head = new AtomicReference<>();
+	private volatile Entry head;
+	
+	private final static VarHandle HANDLE;
+	
+	static {
+		var lookup = MethodHandles.lookup();
+		try {
+			HANDLE = lookup.findVarHandle(Linked2.class, "head", Entry.class);
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			throw new AssertionError(e);
+		}
+	}
 
 	public void addFirst(E element) {
 		Objects.requireNonNull(element);
 		while(true) {
-			var currentHead = head.get();			
-			if(head.compareAndSet(currentHead, new Entry<>(element, currentHead))) {
+			var head = this.head;
+			var entry = new Entry(element, head);
+			if(HANDLE.compareAndSet(this, head, entry)) {
 				return;
 			}
 		}
@@ -30,7 +46,7 @@ public class Linked2<E> {
 
 	public int size() {
 		var size = 0;
-		for(var link = head.get(); link != null; link = link.next) { // pas obligé de lire en RAM
+		for(var link = head; link != null; link = link.next) { // pas obligé de lire en RAM
 			size ++;
 		}
 		return size;
@@ -60,11 +76,6 @@ public class Linked2<E> {
 	}
 }
 
-/**
- * 1 - Deux raisons :
- *     Le code n'est pas Thread safe car la lecture en RAM n'est obligatoire pour la méthode size(), le HEAD n'est pas mis à jour!
- *     La méthode addFirst() est pas thread safe, si plusieurs Thread appelent addfirst(), on aura des pertes de maillons.
- * 
- * 3 - L'Atomic reference n'est pas super efficace, on refait de l'allocation memoire si le compare and set renvoie false. 
+/** 
  * 
  **/
