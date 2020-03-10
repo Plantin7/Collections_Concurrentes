@@ -1,0 +1,11 @@
+Architecture TSO : execution dans le meme ordre en RAM
+intel, sparc
+
+Pas TSO : aucune garantit que l'ecriture et la lecture de fasse en RAM
+ARM 
+
+Bloc statique grantit que toutes les ecritures sont vus par tous les Threads.
+N'importe quels Threads peut voir les intitialisations dans des blocs statique.
+
+Attention: 1 seul Thread execute le bloc statique par conséquent tout les autres Threads sont bloqués jusqu'a avoir lu tous les champs
+ volatile garantit que toutes les ecritures avant ont été faite en RAM

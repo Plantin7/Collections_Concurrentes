@@ -1,0 +1,23 @@
+Exercice 1: Publication safe
+
+1. Le problème de publication c'est le fait qu'un Thread peut voir des champs non initialisés.
+2. Un Thread peut voir un Objet foo non initialisé ce qui explique le problème de publication
+
+3. Il y a un probleme de publication, on aucune garantit que le champ "name" a été initialisé ! Pour le corriger on met le champ final !
+4. Non il y a aucun probleme de publication, car le champ volatile garantit que tous les autres champs ont été initialisés.
+
+5. Oui car le Thread est déclaré dans le constructeur, ce qui implique qu'on a aucune garantit que le champ ont été initilisés lors de l'execution du Runnable du Thread.
+   Pour corriger ce probleme, il suffit de mettre ce Thread dans une autre méthode.
+
+6. Ce code fonctionne car le Thread affiche les valeur pris en paramètre.
+
+
+
+Presentation du contexte.
+Problème précèdemment vu : on raconte pas ca vie
+look up : contexte de tout les membres qui sont visibles 
+
+
+Exo 3:
+regarder ou est qu'il ya des problemes de concurrence
+varHandle.getVolatile(array, index);
