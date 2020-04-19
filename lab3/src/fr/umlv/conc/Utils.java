@@ -6,7 +6,7 @@ import java.nio.file.Path;
 
 
 public class Utils {
-	private static Path HOME;
+	private Path HOME;
 	
 	private Utils() {
 		HOME = Path.of(System.getenv("HOMEPATH"));

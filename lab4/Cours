@@ -1,0 +1,23 @@
+Cours
+
+- But : paralléliser un problème, et donner une partie du problème a chaque Thread
+ - Generateur speudo aléatoire -> seed meme séquence de suite de valeur
+ - Parallel Stream -> pas forcement plus rapide si tu passes plus de temps a distribuer le calcul et à le ré-agréger, c'est plus lent !
+   Si le calcul est couteux alors il faux paralléliser 
+ - La technique Fork/Join
+ 
+ Question 1 : On doit jamais faire de join dans un Runnable/callable d'un ThreadPoolExecutor car si on fait des appels bloquants on peut arreter toutes les Threads du pool et on a un deadlock
+ un deadlock entre la sousmission d'une nouvelle tache qui attend q'une Thread soit dispo et toutes les Threads en attente que la tache que l'on doit soumettre est fini.
+ 
+ lorsque l'on fait un join() dans une Recursive Task, on enlève la tache qui appel le join() du forkjoinpool et on la remet lorsque la tache
+ qui fait le calcul sur lequel on attend a fini son calcul -> pas de deadlock possible
+ 
+ forkjoinpool -> recurviveTask -> join (ce qu'on ne peut pas faire avec un ThreadPoolExecutor)
+ Question 2 : commonPool
+ 
+ Question 3 : lorsque l'on est a l'exterieur et que l'on veut demander l'execution d'une tache récursive au ForkJoinPool, on va utiliser invoke
+ 
+ Recursive task -> paramétré par le type de retour
+ 
+ Exercice 3 : Adapter recursifTask à partir d'un n'importe quel collection, au lieu d'utiliser un tableau on utilise un spliterator 
+ 
