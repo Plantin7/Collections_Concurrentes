@@ -1,0 +1,7 @@
+API des vectorisation, une autre manière de réalisé des calculs parallèles 
+
+Exercice2 :
+Question2 : la diff, dans les deux cas ce sont des PAI parallèle, vecteur sur un meme coeur, forkjoin sur plusieurs coeurs 
+fork/join repartir la tache sur plusieurs coeurs, SIMD faire plusieurs calculs sur 1 seul coeur
+Question3: main loop 
+Question4: le resultat n'est pas satisfaisant, on ne voit pas de grande  différence de perf
